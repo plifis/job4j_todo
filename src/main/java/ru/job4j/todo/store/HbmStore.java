@@ -50,6 +50,34 @@ public class HbmStore implements Store, AutoCloseable{
     }
 
     @Override
+    public Item findById(String id) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        Item item = session.get(Item.class, Integer.parseInt(id));
+        session.getTransaction().commit();
+        session.close();
+        return item;
+    }
+
+    @Override
+    public boolean replace(String id, Item item) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+//        Item temp = session.get(Item.class, Integer.parseInt(id));
+//        if (temp == null) {
+//            session.close();
+//            return false;
+//        }
+//        session.getTransaction().commit();
+//        session.beginTransaction();
+        item.setId(Integer.parseInt(id));
+        session.update(item);
+        session.getTransaction().commit();
+        session.close();
+        return true;
+    }
+
+    @Override
     public void close() throws Exception {
 
     }

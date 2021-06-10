@@ -8,7 +8,16 @@
     <servlet-name>ItemServlet</servlet-name>
     <servlet-class>ru.job4j.todo.controller.ItemServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ReplaceItem</servlet-name>
+    <servlet-class>ru.job4j.todo.controller.ReplaceServlet</servlet-class>
+  </servlet>
   
+  
+  <servlet-mapping>
+    <servlet-name>ReplaceItem</servlet-name>
+    <url-pattern>/replace.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ItemServlet</servlet-name>
     <url-pattern>/item.do</url-pattern>

@@ -21,8 +21,11 @@ public class ItemServlet extends HttpServlet {
                 new Item(req.getParameter("description")));
         if (item.getId() > 0) {
             resp.getWriter().write("Добавлена задача № " + item.getId());
+            resp.getWriter().flush();
         } else {
             resp.getWriter().write("Не удалось добавить задачу");
+            resp.getWriter().flush();
+
         }
     }
 
