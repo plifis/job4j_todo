@@ -8,5 +8,5 @@ public interface Store {
     public Item addItem(Item item);
     public List<Item> getAllItem();
     public Item findById(String id);
-    public boolean replace(String id, Item item);
+    public boolean replace(String id);
 }

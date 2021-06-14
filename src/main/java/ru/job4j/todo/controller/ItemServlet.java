@@ -17,16 +17,8 @@ public class ItemServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
-        Item item = HbmStore.instOf().addItem(
+        HbmStore.instOf().addItem(
                 new Item(req.getParameter("description")));
-        if (item.getId() > 0) {
-            resp.getWriter().write("Добавлена задача № " + item.getId());
-            resp.getWriter().flush();
-        } else {
-            resp.getWriter().write("Не удалось добавить задачу");
-            resp.getWriter().flush();
-
-        }
     }
 
     @Override

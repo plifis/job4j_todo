@@ -14,16 +14,6 @@ public class ReplaceServlet extends HttpServlet {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         String id = req.getParameter("id");
-        Item item = HbmStore.instOf().findById(id);
-        boolean done = item.isDone();
-        item.setDone(!done);
-        HbmStore.instOf().replace(id, item);
-        if (item.isDone() != done) {
-            resp.getWriter().write("Статус задачи изменен " + item.getId());
-            resp.getWriter().flush();
-        } else {
-            resp.getWriter().write("Не удалось изменить статус задачи");
-            resp.getWriter().flush();
-        }
+        HbmStore.instOf().replace(id);
     }
 }
