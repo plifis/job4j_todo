@@ -1,6 +1,6 @@
 # job4j_todo
 Проект "Список дел"
-Используемые технологии: Java, Servlets, Maven, PostgreSQL, HTML, AJAX, JS
+Используемые технологии: Java, Servlets, Maven, PostgreSQL, Hibernate, HTML, AJAX, JS
 
 [![Build Status](https://travis-ci.com/plifis/job4j_todo.svg?branch=main)](https://travis-ci.com/plifis/job4j_todo)
 
