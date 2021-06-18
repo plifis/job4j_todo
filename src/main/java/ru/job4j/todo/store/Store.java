@@ -1,11 +1,15 @@
 package ru.job4j.todo.store;
 
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 
 public interface Store {
-    public Item addItem(Item item);
+    public void addUser(User user);
+    public User findUserByEmail(String email);
+    public Object findUserByName(String name);
+    public void addItem(Item item);
     public List<Item> getAllItem();
     public Item findById(String id);
     public boolean replace(String id);

@@ -3,6 +3,7 @@ package ru.job4j.todo.controller;
 
 import org.json.JSONArray;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.HbmStore;
 
 import javax.servlet.http.HttpServlet;
@@ -17,8 +18,9 @@ public class ItemServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
+        User user = (User) req.getSession().getAttribute("user");
         HbmStore.instOf().addItem(
-                new Item(req.getParameter("description")));
+                new Item(req.getParameter("description"), user));
     }
 
     @Override
@@ -30,5 +32,5 @@ public class ItemServlet extends HttpServlet {
         writer.println(array);
         writer.flush();
     }
-
 }
+

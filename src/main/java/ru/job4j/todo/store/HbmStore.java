@@ -6,6 +6,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
 import javax.persistence.Query;
 import java.util.List;
@@ -27,6 +28,58 @@ public class HbmStore implements Store, AutoCloseable{
         return Lazy.INST;
     }
 
+
+    /**
+     * Добавление объекта класса User
+     * @param user экмзепляр класса User, который требуется сохранить
+     */
+    @Override
+    public void addUser(User user) {
+        this.wrapperMethod(
+                session -> session.save(user));
+    }
+
+    /**
+     * Поиск объекта класса User по адресу почты пользователя
+     * @param email почтовый адрес пользователя для поиска
+     * @return возвращается объекта класса User с переданным постовым адресом, если не найден то null
+     */
+    @Override
+    public User findUserByEmail(String email) {
+        return (User) this.wrapperMethod(
+                session -> {
+                    Query query = session.createQuery("FROM ru.job4j.todo.model.User WHERE email =: email");
+                    query.setParameter("email", email);
+                    List rsl = query.getResultList();
+                    if (rsl.size() > 0) {
+                        return rsl.get(0);
+                    } else {
+                        return null;
+                    }
+                }
+        );
+    }
+
+    /**
+     * Поиск объекта класса User по имени пользователя
+     * @param name Имя пользователя для поиска
+     * @return возвращается объекта класса User с переданным именем, если не найден то null
+     */
+    @Override
+    public User findUserByName(String name) {
+        return (User) this.wrapperMethod(
+                session -> {
+                    Query query = session.createQuery("FROM ru.job4j.todo.model.User WHERE name =: name");
+                    query.setParameter("name", name);
+                    List rsl = query.getResultList();
+                    if (rsl.size() > 0) {
+                        return rsl.get(0);
+                    } else {
+                        return null;
+                    }
+                }
+        );
+    }
 
     /**
      * Метод Обертка
@@ -52,11 +105,10 @@ public class HbmStore implements Store, AutoCloseable{
     /**
      * Добавление нового задания в хранилище
      * @param item экземпляр задания, который необходимо добавить
-     * @return экземпляр, который был добавлен в хранилище
      */
     @Override
-    public Item addItem(Item item) {
-        return (Item) this.wrapperMethod(
+    public void addItem(Item item) {
+        this.wrapperMethod(
                 session -> session.save(item));
     }
 

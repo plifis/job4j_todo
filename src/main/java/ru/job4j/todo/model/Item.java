@@ -14,14 +14,20 @@ public class Item {
     private Timestamp created;
     private boolean done;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
     public Item() {
 
     }
 
-    public Item(String description) {
+    public Item(String description, User user) {
         this.description = description;
         this.done = false;
         this.created = new Timestamp(System.currentTimeMillis());
+        this.user = user;
     }
 
     public int getId() {
@@ -56,16 +62,12 @@ public class Item {
         this.done = done;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return id == item.id && done == item.done && Objects.equals(description, item.description) && Objects.equals(created, item.created);
+    public User getUser() {
+        return user;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, description, created, done);
+    public void setUser(User user) {
+        this.user = user;
     }
+
 }

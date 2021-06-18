@@ -15,86 +15,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
     <title>TODO List</title>
-    <script>
-        function addItem() {
-            $.ajax({
-                type: 'POST',
-                url: 'http://localhost:8080/item/item.do',
-                data: {"description": $("#description").val()},
-                data_type: 'text'
-            }).done(function (resp) {
-                alert(resp);
-            }).fail(function (err) {
-                alert("Что то пошло не так" + err);
-            });
-        }
-    </script>
-    <script>
-        function getAllItems () {
-            $.ajax({
-                type: 'GET',
-                url: 'http://localhost:8080/item/item.do',
-                data_type: 'json'
-            }).done( function (resp){
-                let arrJson = JSON.parse(resp);
-                    for (let i = 0; i < arrJson.length; i++) {
-                        let desc = arrJson[i].description;
-                        let id = arrJson[i].id;
-                        let created = arrJson[i].created;
-                        let done = '';
-                        let disabled = '';
-                        if (arrJson[i].done === true) {
-                            done = 'checked';
-                        }
-                        if (done === 'checked') {
-                            disabled = 'disabled';
-                        }
-                        $('tbody:last').append(
-                            '<tr><td><label class="form-check-label" for="item' + id + '">' + id + '</label></td>' +
-                            '<td><label class="form-check-label" for="item' + id + '">' + desc + '</label></td>' +
-                            '<td><label class="form-check-label" for="item"' + id +  '"</td>' + created + '</label></td>' +
-                            '<td><input class="form-check-input" type="checkbox"' + done + ' ' + disabled + ' ' +
-                            'name="item' + id +  '" onclick="replaceItem(' + id +')"></td></tr>');
-                    }
-            }).fail( function (){
-                alert("не смог получить все записи");
-            });
-        }
-    </script>
-    <script>
-        function watchAllItems() {
-            if (document.getElementById('watchAll').checked === false) {
-                $('input').each(function () {
-                     let id = $(this).attr('id');
-                    if (($(this).attr('checked')) && (id !== 'watchAll')) {
-                         $(this).parent().parent().hide();
-                    }
-                });
-            } else {
-                $('input').each(function () {
-                    if (($(this).attr('checked'))) {
-                        $(this).parent().parent().show();
-                    }
-                });
-            }
-        }
-    </script>
-    <script>
-        function replaceItem(id) {
-        $.ajax({
-            type: 'POST',
-            url: 'http://localhost:8080/item/replace.do',
-            data: 'id=' + id,
-            data_type: 'text'
-        }).done(function (){
-            location.reload();
-        }).fail(function (){
-            alert('Запись не была обновлена');
-        })
-        }
-    </script>
+<script src="scripts/script.js"></script>
 </head>
 <body onload="getAllItems()">
+
 <div class="container">
         <form>
             <div class="form-group row">
@@ -124,6 +48,7 @@
             <th scope="col">Description</th>
             <th scope="col">Created</th>
             <th scope="col">Done</th>
+            <th scope="col">Author</th>
         </tr>
         </thead>
         <tbody>
