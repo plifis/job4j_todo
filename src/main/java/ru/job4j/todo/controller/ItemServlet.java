@@ -19,8 +19,9 @@ public class ItemServlet extends HttpServlet {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         User user = (User) req.getSession().getAttribute("user");
-        HbmStore.instOf().addItem(
-                new Item(req.getParameter("description"), user));
+        String[] categories = req.getParameterValues("categories[]");
+        Item item = new Item(req.getParameter("description"), user);
+        HbmStore.instOf().addItem(item, categories);
     }
 
     @Override

@@ -2,10 +2,18 @@ function addItem() {
     if (!validateItem()) {
         return false;
     }
+
+    let options = Array.from(document.getElementById('categories').selectedOptions).map(el=>el.value);
+    let selectArr = [];
+    let y = 0;
+    for (let i = 0; i < options.length; i++) {
+            selectArr[y] = options[i];
+            y++;
+        }
     $.ajax({
         type: 'POST',
         url: 'http://localhost:8080/item/item.do',
-        data: {"description": $("#description").val()},
+        data: {"description": $("#description").val(), "categories": options},
         data_type: 'text'
     }).done(function (resp) {
         alert(resp);
@@ -14,12 +22,13 @@ function addItem() {
     });
 }
 
-    function getAllItems () {
+function getAllItems () {
     $.ajax({
         type: 'GET',
         url: 'http://localhost:8080/item/item.do',
-        data_type: 'json'
+        data_type: 'text'
     }).done( function (resp){
+        loadListCategories();
         let arrJson = JSON.parse(resp);
         for (let i = 0; i < arrJson.length; i++) {
             let desc = arrJson[i].description;
@@ -29,6 +38,10 @@ function addItem() {
             let disabled = '';
             let user;
             let userObject = arrJson[i].user;
+            let category = "";
+            arrJson[i].categories.forEach(function (categories) {
+               category += categories.name + ", ";
+            });
             if (userObject !== undefined) {
                 user = userObject.name;
             }
@@ -44,14 +57,15 @@ function addItem() {
                 '<td><label class="form-check-label" for="item"' + id +  '"</td>' + created + '</label></td>' +
                 '<td><input class="form-check-input" type="checkbox"' + done + ' ' + disabled + ' ' +
                 'name="item' + id +  '" onclick="replaceItem(' + id +')"></td> +' +
-                '<td><label class="form-check-label" for="item' + id + '">' + user + '</label></tr>');
+                '<td><label class="form-check-label" for="item' + id + '">' + user + '</label></td>' +
+                '<td><label class="form-check-label" for="categories">' + category +'</label> </td></tr>');
         }
     }).fail( function (){
         alert("не смог получить все записи");
     });
 }
 
-    function watchAllItems() {
+function watchAllItems() {
         if (document.getElementById('watchAll').checked === false) {
             $('input').each(function () {
                 let id = $(this).attr('id');
@@ -105,7 +119,7 @@ function validateRegistration() {
     }
 }
 
-    function validateLogin() {
+function validateLogin() {
         let login = $('#login').val();
         let password = $('#password').val();
         if ((login === "") || (password === "")) {
@@ -124,4 +138,22 @@ function validateItem() {
     } else {
         return  true;
     }
+}
+
+function loadListCategories() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:8080/item/categories.do',
+        data_type: 'text'
+    }).done( function (resp){
+        let arrCategories =JSON.parse(resp);
+        for (let i = 0; i < arrCategories.length; i++) {
+            let id = arrCategories[i].id;
+            let name = arrCategories[i].name;
+            $('select').append(
+                '<option name="categories" id="categories" value=' + id + '>' + name +'</option>')
+        }
+    }).fail( function (err){
+        alert("Что то пошло не так" + err);
+    })
 }

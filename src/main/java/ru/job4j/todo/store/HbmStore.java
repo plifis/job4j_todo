@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -107,11 +108,17 @@ public class HbmStore implements Store, AutoCloseable{
      * @param item экземпляр задания, который необходимо добавить
      */
     @Override
-    public void addItem(Item item) {
+    public void addItem(Item item, String[] categories) {
         this.wrapperMethod(
-                session -> session.save(item));
+                session -> {
+                    for (String s : categories) {
+                        Category category = session.find(Category.class, Integer.parseInt(s));
+                        item.addCategory(category);
+                    }
+                    session.persist(item);
+                    return item;
+                });
     }
-
     /**
      * Получение списка всех заданий в хранилище
      * @return Список всех заданий в хранилище
@@ -119,7 +126,17 @@ public class HbmStore implements Store, AutoCloseable{
     @Override
     public List<Item> getAllItem() {
         return this.wrapperMethod(
-                session -> session.createQuery("FROM ru.job4j.todo.model.Item").list());
+                session -> session.createQuery(
+                        "select distinct i from Item i join fetch i.categories").list());
+    }
+
+
+
+
+    @Override
+    public List<Category> getAllCategories() {
+        return this.wrapperMethod(
+                session -> session.createQuery("FROM ru.job4j.todo.model.Category").list());
     }
 
     /**
@@ -127,6 +144,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @param id Идентификатор заданий
      * @return экземпляр Item с переданным в этот метод идентификатором, если найден, иначе null
      */
+
     @Override
     public Item findById(String id) {
           return this.wrapperMethod(

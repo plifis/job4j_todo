@@ -21,15 +21,21 @@
 
 <div class="container">
         <form>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="description" class="col-sm-6 col-form-label">Description</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="description" placeholder="Description">
                 </div>
+                <label for="categories" class="col-sm-6 col-form-label">Categories</label>
+                <div class="col=sm-10">
+                    <select class="form-control" name="categories" id="categories" multiple>
+
+                    </select>
+                </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-2">Watch all</div>
-                <div class="col-sm-10">
+                <div class="col-sm-1">Watch all</div>
+                <div class="col-sm-11">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" checked id="watchAll" onclick="watchAllItems();">
                         <label class="form-check-label" for="watchAll">Watch All</label>
@@ -49,6 +55,7 @@
             <th scope="col">Created</th>
             <th scope="col">Done</th>
             <th scope="col">Author</th>
+            <th scope="col">Category</th>
         </tr>
         </thead>
         <tbody>
