@@ -1,7 +1,6 @@
 package ru.job4j.todo.model;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.List;
@@ -13,6 +12,8 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
+
+    @Temporal(TemporalType.DATE)
     private Date created;
     private boolean done;
 
