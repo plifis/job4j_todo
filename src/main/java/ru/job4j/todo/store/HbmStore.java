@@ -29,7 +29,6 @@ public class HbmStore implements Store, AutoCloseable{
         return Lazy.INST;
     }
 
-
     /**
      * Добавление объекта класса User
      * @param user экмзепляр класса User, который требуется сохранить
@@ -119,6 +118,7 @@ public class HbmStore implements Store, AutoCloseable{
                     return item;
                 });
     }
+
     /**
      * Получение списка всех заданий в хранилище
      * @return Список всех заданий в хранилище
@@ -129,9 +129,6 @@ public class HbmStore implements Store, AutoCloseable{
                 session -> session.createQuery(
                         "select distinct i from Item i join fetch i.categories").list());
     }
-
-
-
 
     @Override
     public List<Category> getAllCategories() {
@@ -144,7 +141,6 @@ public class HbmStore implements Store, AutoCloseable{
      * @param id Идентификатор заданий
      * @return экземпляр Item с переданным в этот метод идентификатором, если найден, иначе null
      */
-
     @Override
     public Item findById(String id) {
           return this.wrapperMethod(

@@ -24,9 +24,7 @@ public class Item {
     @JoinColumn(name = "category_id")
     private Collection<Category> categories = new ArrayList<>();
 
-
     public Item() {
-
     }
 
     public Item(String description, User user) {
@@ -88,14 +86,16 @@ public class Item {
             this.categories = categories;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return id == item.id && done == item.done && Objects.equals(description, item.description) && Objects.equals(created, item.created) && Objects.equals(user, item.user) && Objects.equals(categories, item.categories);
+        return id == item.id && done == item.done &&
+                Objects.equals(description, item.description) &&
+                Objects.equals(created, item.created) &&
+                Objects.equals(user, item.user) &&
+                Objects.equals(categories, item.categories);
     }
 
     @Override
