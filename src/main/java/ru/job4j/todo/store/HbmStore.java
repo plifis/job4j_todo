@@ -21,6 +21,7 @@ public class HbmStore implements Store, AutoCloseable{
             .buildMetadata()
             .buildSessionFactory();
 
+
     private static final class Lazy {
         private static final Store INST = new HbmStore();
     }
@@ -34,7 +35,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @param user экмзепляр класса User, который требуется сохранить
      */
     @Override
-    public void addUser(User user) {
+    public void addUser(User user) throws Exception {
         this.wrapperMethod(
                 session -> session.save(user));
     }
@@ -45,7 +46,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @return возвращается объекта класса User с переданным постовым адресом, если не найден то null
      */
     @Override
-    public User findUserByEmail(String email) {
+    public User findUserByEmail(String email) throws Exception {
         return (User) this.wrapperMethod(
                 session -> {
                     Query query = session.createQuery("FROM ru.job4j.todo.model.User WHERE email =: email");
@@ -66,7 +67,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @return возвращается объекта класса User с переданным именем, если не найден то null
      */
     @Override
-    public User findUserByName(String name) {
+    public User findUserByName(String name) throws Exception {
         return (User) this.wrapperMethod(
                 session -> {
                     Query query = session.createQuery("FROM ru.job4j.todo.model.User WHERE name =: name");
@@ -87,7 +88,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @param <T> тип обхекта который будет возвращен
      * @return результат выполнения
      */
-    private <T> T wrapperMethod(Function<Session, T> command) {
+    private <T> T wrapperMethod(Function<Session, T> command) throws Exception{
             Session session = sf.openSession();
             session.beginTransaction();
             try {
@@ -107,7 +108,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @param item экземпляр задания, который необходимо добавить
      */
     @Override
-    public void addItem(Item item, String[] categories) {
+    public void addItem(Item item, String[] categories) throws Exception {
         this.wrapperMethod(
                 session -> {
                     for (String s : categories) {
@@ -124,14 +125,14 @@ public class HbmStore implements Store, AutoCloseable{
      * @return Список всех заданий в хранилище
      */
     @Override
-    public List<Item> getAllItem() {
+    public List<Item> getAllItem() throws Exception {
         return this.wrapperMethod(
                 session -> session.createQuery(
                         "select distinct i from Item i join fetch i.categories").list());
     }
 
     @Override
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories() throws Exception {
         return this.wrapperMethod(
                 session -> session.createQuery("FROM ru.job4j.todo.model.Category").list());
     }
@@ -142,7 +143,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @return экземпляр Item с переданным в этот метод идентификатором, если найден, иначе null
      */
     @Override
-    public Item findById(String id) {
+    public Item findById(String id) throws Exception {
           return this.wrapperMethod(
                   session -> session.get(Item.class, Integer.parseInt(id)));
     }
@@ -153,7 +154,7 @@ public class HbmStore implements Store, AutoCloseable{
      * @return истина, если элемент изменен
      */
     @Override
-    public boolean replace(String id) {
+    public boolean replace(String id) throws Exception {
         return this.wrapperMethod(
                 session -> {
                     Query query = session.createQuery("UPDATE ru.job4j.todo.model.Item SET done =: done WHERE id =: id");

@@ -1,5 +1,6 @@
 package ru.job4j.todo.controller;
 
+import org.hibernate.exception.ConstraintViolationException;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.HbmStore;
 
@@ -12,19 +13,21 @@ import java.io.IOException;
 
 public class RegServlet extends HttpServlet {
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ConstraintViolationException, ServletException {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
-        if ((HbmStore.instOf().findUserByName(name) == null) && ( HbmStore.instOf().findUserByEmail(email) == null)) {
                 User user = new User(name, email,
                         req.getParameter("password"));
-                HbmStore.instOf().addUser(user);
-                HttpSession session =req.getSession();
-                session.setAttribute("user", user);
-                resp.sendRedirect(req.getContextPath() + "/index.html");
-            } else {
-                req.setAttribute("error", "Пользователь с таким email уже существует");
-                req.getRequestDispatcher("login.jsp").forward(req, resp);
-            }
+                try {
+                    HbmStore.instOf().addUser(user);
+                    HttpSession session =req.getSession();
+                    session.setAttribute("user", user);
+                    resp.sendRedirect(req.getContextPath() + "/index.html");
+                } catch (ConstraintViolationException e) {
+                    req.setAttribute("error", "Пользователь с таким email уже существует");
+                    req.getRequestDispatcher("login.jsp").forward(req, resp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
     }
 }

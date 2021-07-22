@@ -15,7 +15,12 @@ public class CategoryServlet extends HttpServlet {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
-        JSONArray array = new JSONArray(HbmStore.instOf().getAllCategories());
+        JSONArray array = null;
+        try {
+            array = new JSONArray(HbmStore.instOf().getAllCategories());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         writer.println(array);
         writer.flush();
     }

@@ -14,6 +14,10 @@ public class ReplaceServlet extends HttpServlet {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         String id = req.getParameter("id");
-        HbmStore.instOf().replace(id);
+        try {
+            HbmStore.instOf().replace(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

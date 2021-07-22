@@ -16,7 +16,12 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String name = req.getParameter("login");
         String password = req.getParameter("password");
-        User user = (User) HbmStore.instOf().findUserByName(name);
+        User user = null;
+        try {
+            user = (User) HbmStore.instOf().findUserByName(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if ((user != null) && (user.getPassword().equals(password))) {
             HttpSession sc = req.getSession();
             sc.setAttribute("user", user);

@@ -21,7 +21,11 @@ public class ItemServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
         String[] categories = req.getParameterValues("categories[]");
         Item item = new Item(req.getParameter("description"), user);
-        HbmStore.instOf().addItem(item, categories);
+        try {
+            HbmStore.instOf().addItem(item, categories);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -29,7 +33,12 @@ public class ItemServlet extends HttpServlet {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
-        JSONArray array = new JSONArray(HbmStore.instOf().getAllItem());
+        JSONArray array = null;
+        try {
+            array = new JSONArray(HbmStore.instOf().getAllItem());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         writer.println(array);
         writer.flush();
     }
