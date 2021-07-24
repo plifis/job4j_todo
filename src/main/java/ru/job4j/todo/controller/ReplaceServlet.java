@@ -10,14 +10,10 @@ import java.io.IOException;
 
 public class ReplaceServlet extends HttpServlet {
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         String id = req.getParameter("id");
-        try {
-            HbmStore.instOf().replace(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        HbmStore.instOf().replace(id);
     }
 }
