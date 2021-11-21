@@ -1,7 +1,7 @@
 # Проект "Список дел"
 Используемые технологии: Java, Servlets, Maven, PostgreSQL, Hibernate, HTML, AJAX, JS
 
-[![Build Status](https://travis-ci.com/plifis/job4j_todo.svg?branch=main)](https://travis-ci.com/plifis/job4j_todo)
+[![Build Status](https://app.travis-ci.com/plifis/job4j_todo.svg?branch=master)](https://app.travis-ci.com/plifis/job4j_todo)
 
 Добавляем задание
 ![Screenshot](images/1.PNG)
